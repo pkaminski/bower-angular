@@ -8532,7 +8532,23 @@ function $CompileProvider($provide, $$sanitizeUriProvider) {
       var linkFns = [],
           attrs, directives, nodeLinkFn, childNodes, childLinkFn, linkFnFound, nodeLinkFnFound;
 
+      var originalLength = nodeList.length;
       for (var i = 0; i < nodeList.length; i++) {
+        if (!nodeList[i]) {
+          var prevNode = i >= 1 && nodeList[i-1];
+          var e = new Error('Internal Angular error: missing node');
+          e.extra = {
+            type: nodeList.constructor.name, index: i, currentLength: nodeList.length,
+            originalLength: originalLength, context: nodeList.context,
+            prevNode: prevNode && prevNode.toString(),
+            prevNodeTag: prevNode && prevNode.tagName,
+            prevNodeClass: prevNode && prevNode.className,
+            rootElement: $rootElement && $rootElement.toString(),
+            rootElementTag: $rootElement && $rootElement.tagName,
+            rootElementClass: $rootElement && $rootElement.className
+          };
+          throw e;
+        }
         attrs = new Attributes();
 
         // we must always refer to nodeList[i] since the nodes can be replaced underneath us.
