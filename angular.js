@@ -8536,10 +8536,15 @@ function $CompileProvider($provide, $$sanitizeUriProvider) {
       for (var i = 0; i < nodeList.length; i++) {
         if (!nodeList[i]) {
           var prevNode = i >= 1 && nodeList[i-1];
+          var nodeListContents = [];
+          for (var j = 0; j < nodeList.length; j++) {
+            nodeListContents.push(!!nodeList[j] ? '1' : '0');
+          }
           var e = new Error('Internal Angular error: missing node');
           e.extra = {
             type: nodeList.constructor.name, index: i, currentLength: nodeList.length,
             originalLength: originalLength, context: nodeList.context,
+            nodeList: nodeListContents,
             prevNode: prevNode && prevNode.toString(),
             prevNodeTag: prevNode && prevNode.tagName,
             prevNodeClass: prevNode && prevNode.className,
