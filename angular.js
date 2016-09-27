@@ -8540,7 +8540,9 @@ function $CompileProvider($provide, $$sanitizeUriProvider) {
           for (var j = 0; j < nodeList.length; j++) {
             nodeListContents.push(!!nodeList[j] ? '1' : '0');
           }
-          var e = new Error('Internal Angular error: missing node');
+          var e = new Error(
+            'Known bug in Chrome JS engine; ' +
+            'see https://bugs.chromium.org/p/chromium/issues/detail?id=640003');
           e.extra = {
             type: nodeList.constructor.name, index: i, currentLength: nodeList.length,
             originalLength: originalLength, context: nodeList.context,
